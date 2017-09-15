@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import * as firebase from 'firebase/app';
 
@@ -12,7 +13,8 @@ import { AuthService } from '../auth.service';
 export class LoginComponent implements OnInit {
   user: any;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService,
+              private router: Router) { }
 
   ngOnInit() {
     firebase.auth().onAuthStateChanged(user => {
@@ -22,5 +24,6 @@ export class LoginComponent implements OnInit {
 
   login(email, password) {
     this.authService.login(email, password);
+    this.router.navigate(['/my-stories']);
   }
 }

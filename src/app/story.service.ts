@@ -12,7 +12,7 @@ export class StoryService {
   constructor(private database: AngularFireDatabase) {
   }
 
-  getStories(uid){ //make uid an argument
+  getStories(uid) {
     return this.database.list('games/' + uid);
   }
 }
