@@ -1,5 +1,5 @@
 <h3>My Stories</h3>
 
 <ul>
-  <li *ngFor="let story of stories | async">test</li>
+  <li *ngFor="let story of stories | async">{{story.openingLine}}</li>
 </ul>

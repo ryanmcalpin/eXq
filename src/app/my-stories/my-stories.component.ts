@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+import * as firebase from 'firebase/app';
+
+import { AuthService } from '../auth.service';
 import { StoryService } from '../story.service';
 import { FirebaseListObservable } from 'angularfire2/database';
 
@@ -9,12 +12,17 @@ import { FirebaseListObservable } from 'angularfire2/database';
   styleUrls: ['./my-stories.component.css']
 })
 export class MyStoriesComponent implements OnInit {
+  user: any;
   stories: FirebaseListObservable<any[]>;
 
-  constructor(private storyService: StoryService) { }
+  constructor(private authService: AuthService,
+              private storyService: StoryService) { }
 
   ngOnInit() {
-    this.stories = this.storyService.getStories();
+    firebase.auth().onAuthStateChanged(user => {
+      this.user = user ? user : null;
+      this.stories = this.storyService.getStories(this.user.uid);
+    });
   }
 
 }

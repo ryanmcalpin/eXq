@@ -5,11 +5,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { masterFirebaseConfig } from './api-keys';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuth } from 'angularfire2/auth';
+
 import { StoryService } from './story.service';
+import { AuthService } from './auth.service';
 
 import { AppComponent } from './app.component';
 import { NewStoryComponent } from './new-story/new-story.component';
 import { MyStoriesComponent } from './my-stories/my-stories.component';
+import { LoginComponent } from './login/login.component';
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
@@ -22,7 +26,8 @@ export const firebaseConfig = {
   declarations: [
     AppComponent,
     NewStoryComponent,
-    MyStoriesComponent
+    MyStoriesComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +35,7 @@ export const firebaseConfig = {
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule
   ],
-  providers: [ StoryService ],
+  providers: [ StoryService, AuthService, AngularFireAuth ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
