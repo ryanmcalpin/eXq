@@ -23,7 +23,11 @@ export class LoginComponent implements OnInit {
   }
 
   login(email, password) {
-    this.authService.login(email, password);
-    this.router.navigate(['/my-stories']);
+    this.authService.login(email, password)
+      .then(data => this.router.navigate(['/my-stories']));
+  }
+
+  logout() {
+    this.authService.logout().then(() => alert("You are logged out."));
   }
 }

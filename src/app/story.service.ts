@@ -7,7 +7,7 @@ import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/databa
 @Injectable()
 export class StoryService {
   stories: FirebaseListObservable<any[]>;
-  uid: string = "2ySG5BK3YMWUZbNW4Ws8PSr3AAA3";
+  //uid: string;
 
   constructor(private database: AngularFireDatabase) {
   }

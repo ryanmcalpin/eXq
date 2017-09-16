@@ -6,20 +6,28 @@ import * as firebase from 'firebase/app';
 
 @Injectable()
 export class AuthService {
-  user: Observable<firebase.User>;
+  // user: Observable<firebase.User>;
 
   constructor(public afAuth: AngularFireAuth, public db: AngularFireDatabase) {
   }
 
   createAccount(email: string, password: string) {
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch(error => alert(error.message));
+    return firebase.auth()
+      .createUserWithEmailAndPassword(email, password)
+      .catch(error => alert(error.message));
   }
 
   login(email: string, password: string) {
-    firebase.auth().signInWithEmailAndPassword(email, password).catch(error => alert(error.message));
+    return firebase.auth()
+      .signInWithEmailAndPassword(email, password)
+      .catch(error => alert(error.message));
   }
 
-  getCurrentUser() {
-    return this.user;
+  logout() {
+    return firebase.auth().signOut();
   }
+
+  // getCurrentUser() {
+  //   return this.user;
+  // }
 }
