@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { NewStoryComponent } from './new-story/new-story.component';
 import { MyStoriesComponent } from './my-stories/my-stories.component';
 import { LoginComponent } from './login/login.component';
+import { StoryComponent } from './story/story.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'story/:id',
+    component: StoryComponent
   }
 ]
 

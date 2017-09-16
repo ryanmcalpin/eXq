@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 
 import * as firebase from 'firebase/app';
 import { FirebaseListObservable } from 'angularfire2/database';
@@ -22,16 +23,13 @@ export class MyStoriesComponent implements OnInit, OnDestroy {
 
 
   constructor(private authService: AuthService,
-              private storyService: StoryService) { }
+              private storyService: StoryService,
+              private router: Router) { }
 
   ngOnInit() {
     firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.user = user;
-        this.getStories(this.user.uid);
-      } else {
-        this.user = null;
-      }
+      this.user = user ? user : null;
+      this.getStories(this.user.uid);
     });
   }
 
@@ -42,7 +40,12 @@ export class MyStoriesComponent implements OnInit, OnDestroy {
   }
 
   selectStory(story) {
-    
+    this.router.navigate(['/story', story.firebaseKey]);
+
+    // this.storyService.getStory(this.user.uid, story.firebaseKey)
+    //   .takeUntil(this.ngUnsubscribe)
+    //   .subscribe(story => this.router.navigate(['/story', story.firebaseKey]));
+
   }
 
   ngOnDestroy() {

@@ -12,6 +12,10 @@ export class StoryService {
     return this.database.list('games/' + uid);
   }
 
+  getStory(uid, id) {
+    return this.database.object('games/' + uid + '/' + id);
+  }
+
   private handleError(error: any): Promise<any> {
     console.error('And error occurred', error); //demo only
     return Promise.reject(error.message || error);

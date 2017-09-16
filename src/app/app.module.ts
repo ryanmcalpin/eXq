@@ -14,6 +14,7 @@ import { AppComponent } from './app.component';
 import { NewStoryComponent } from './new-story/new-story.component';
 import { MyStoriesComponent } from './my-stories/my-stories.component';
 import { LoginComponent } from './login/login.component';
+import { StoryComponent } from './story/story.component';
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
@@ -27,7 +28,8 @@ export const firebaseConfig = {
     AppComponent,
     NewStoryComponent,
     MyStoriesComponent,
-    LoginComponent
+    LoginComponent,
+    StoryComponent
   ],
   imports: [
     BrowserModule,
