@@ -6,7 +6,7 @@ import * as firebase from 'firebase/app';
 
 @Injectable()
 export class AuthService {
-  // user: Observable<firebase.User>;
+  user: any;
 
   constructor(public afAuth: AngularFireAuth, public db: AngularFireDatabase) {
   }
@@ -18,7 +18,7 @@ export class AuthService {
   }
 
   login(email: string, password: string) {
-    return firebase.auth()
+    return this.user = firebase.auth()
       .signInWithEmailAndPassword(email, password)
       .catch(error => alert(error.message));
   }
@@ -27,7 +27,7 @@ export class AuthService {
     return firebase.auth().signOut();
   }
 
-  // getCurrentUser() {
-  //   return this.user;
-  // }
+  getCurrentUser() {
+    return this.afAuth.authState;
+  }
 }

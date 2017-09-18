@@ -1,5 +1,7 @@
 <h3>My Stories</h3>
 
+<h4 *ngIf="!user">You are not logged in.</h4>
+
 <ul>
   <li *ngFor="let story of stories" (click)="selectStory(story)">{{story.openingLine}}</li>
 </ul>

@@ -1,23 +1,21 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import * as firebase from 'firebase/app';
-import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
-import { FirebaseObjectObservable } from 'angularfire2/database';
 
 import { StoryService } from '../story.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-story',
   templateUrl: './story.component.html',
   styleUrls: ['./story.component.css']
 })
-export class StoryComponent implements OnInit {
+export class StoryComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
-  user: any;
-  story: FirebaseObjectObservable<any>;
+  user: any = null;
+  story: any;
   hasInvite: boolean;
   needsInvite: boolean;
   fullStory: string = "    ";
@@ -25,32 +23,40 @@ export class StoryComponent implements OnInit {
 
 
   constructor(private storyService: StoryService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private authService: AuthService) { }
 
   ngOnInit() {
-      firebase.auth().onAuthStateChanged(user => {
-      this.user = user ? user : null;
-
-      this.route.paramMap.switchMap((params: ParamMap) =>
-        this.storyService.getStory(this.user.uid, params.get('id')))
+    this.route.params.subscribe(params => {
+      this.authService.getCurrentUser()
+        .takeUntil(this.ngUnsubscribe)
+        .subscribe(user => {
+          this.user = user; //if not null check?
+          this.storyService.getStory(user.uid, params['id'])
           .takeUntil(this.ngUnsubscribe)
           .subscribe(story => {
             this.story = story;
-            this.needsInvite = !story.collaboratorName;
-            this.hasInvite = story.collaboratorName && !story.collaboratorUid;
-
-            for (var i = 0; i < story.ownerSentences.length; i++) {
-              this.fullStory = this.fullStory.concat(story.ownerSentences[i]);
-              if (story.collaboratorSentences && story.collaboratorSentences[i]) {
-                this.fullStory = this.fullStory.concat(" " + story.collaboratorSentences[i] + " ");
-              }
-
-            }
-
-            console.log(this.story);
-
+            this.buildStory();
+          });
         });
     });
+  }
+
+  buildStory() {
+    this.needsInvite = !this.story.collaboratorName;
+    this.hasInvite = this.story.collaboratorName && !this.story.collaboratorUid;
+
+    for (var i = 0; i < this.story.ownerSentences.length; i++) {
+      this.fullStory = this.fullStory.concat(this.story.ownerSentences[i]);
+      if (this.story.collaboratorSentences && this.story.collaboratorSentences[i]) {
+        this.fullStory = this.fullStory.concat(" " + this.story.collaboratorSentences[i] + " ");
+      }
+    }
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
 }

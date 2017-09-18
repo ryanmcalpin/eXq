@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
-import * as firebase from 'firebase/app';
-import { FirebaseListObservable } from 'angularfire2/database';
 
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
@@ -18,7 +16,7 @@ import { Story } from '../story.model';
 })
 export class MyStoriesComponent implements OnInit, OnDestroy {
   user: any;
-  stories: FirebaseListObservable<any[]>;
+  stories: any;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
 
@@ -27,16 +25,25 @@ export class MyStoriesComponent implements OnInit, OnDestroy {
               private router: Router) { }
 
   ngOnInit() {
-    firebase.auth().onAuthStateChanged(user => {
-      this.user = user ? user : null;
-      this.getStories(this.user.uid);
-    });
+    this.authService.getCurrentUser()
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe(user => {
+        if (user) {
+          this.user = user;
+          this.getStories(user.uid);
+        } else {
+          this.user = null;
+        }
+      });
   }
 
   getStories(uid: string) {
     this.storyService.getStories(uid)
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(stories => this.stories = stories);
+      .subscribe(stories => {
+        this.stories = stories;
+        console.log(this.stories);
+      });
   }
 
   selectStory(story) {

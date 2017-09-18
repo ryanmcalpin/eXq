@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
+import * as firebase from 'firebase/app';
+
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-root',
@@ -6,11 +12,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'Exquisite';
-  public user: any;
+  user: any;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
+
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
-    // firebase.auth().onAuthStateChanged(user => user ? user = this.user : user = null);
+    firebase.auth().onAuthStateChanged(user => {
+      this.user = user ? user : null;
+    });
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }
