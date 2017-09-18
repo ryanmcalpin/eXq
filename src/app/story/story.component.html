@@ -1,3 +1,8 @@
-<p>
-  {{story?.collaboratorName}}
-</p>
+<div *ngIf="story">
+  <h4>Owner: {{story?.ownerName}}</h4>
+  <h4 *ngIf='needsInvite'>Invite Needed!</h4>
+  <h4 *ngIf='hasInvite'>Invtited: {{story?.collaboratorName}}</h4>
+  <h4 *ngIf='!needsInvite && !hasInvite'>Collaborator: {{story?.collaboratorName}}</h4>
+
+  <pre>{{fullStory}}</pre>
+</div>

@@ -41,11 +41,6 @@ export class MyStoriesComponent implements OnInit, OnDestroy {
 
   selectStory(story) {
     this.router.navigate(['/story', story.firebaseKey]);
-
-    // this.storyService.getStory(this.user.uid, story.firebaseKey)
-    //   .takeUntil(this.ngUnsubscribe)
-    //   .subscribe(story => this.router.navigate(['/story', story.firebaseKey]));
-
   }
 
   ngOnDestroy() {

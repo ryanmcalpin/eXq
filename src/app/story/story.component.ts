@@ -15,9 +15,13 @@ import { StoryService } from '../story.service';
   styleUrls: ['./story.component.css']
 })
 export class StoryComponent implements OnInit {
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
   user: any;
   story: FirebaseObjectObservable<any>;
-  private ngUnsubscribe: Subject<void> = new Subject<void>();
+  hasInvite: boolean;
+  needsInvite: boolean;
+  fullStory: string = "    ";
+
 
 
   constructor(private storyService: StoryService,
@@ -27,7 +31,25 @@ export class StoryComponent implements OnInit {
       firebase.auth().onAuthStateChanged(user => {
       this.user = user ? user : null;
 
-      this.route.paramMap.switchMap((params: ParamMap) => this.storyService.getStory(this.user.uid, params.get('id'))).takeUntil(this.ngUnsubscribe).subscribe(story => this.story = story);
+      this.route.paramMap.switchMap((params: ParamMap) =>
+        this.storyService.getStory(this.user.uid, params.get('id')))
+          .takeUntil(this.ngUnsubscribe)
+          .subscribe(story => {
+            this.story = story;
+            this.needsInvite = !story.collaboratorName;
+            this.hasInvite = story.collaboratorName && !story.collaboratorUid;
+
+            for (var i = 0; i < story.ownerSentences.length; i++) {
+              this.fullStory = this.fullStory.concat(story.ownerSentences[i]);
+              if (story.collaboratorSentences && story.collaboratorSentences[i]) {
+                this.fullStory = this.fullStory.concat(" " + story.collaboratorSentences[i] + " ");
+              }
+
+            }
+
+            console.log(this.story);
+
+        });
     });
   }
 
