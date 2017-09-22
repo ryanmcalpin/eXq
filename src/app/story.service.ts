@@ -36,6 +36,12 @@ export class StoryService {
       sentence = sentence.concat(".");
     }
 
+    if (sentence.slice(0, 1).match(/(\'|\")/)) {
+      sentence = sentence.charAt(0) + sentence.charAt(1).toUpperCase() + sentence.slice(2);
+    } else {
+      sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1);
+    }
+
     return sentence;
   }
 

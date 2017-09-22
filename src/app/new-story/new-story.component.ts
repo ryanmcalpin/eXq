@@ -39,7 +39,8 @@ export class NewStoryComponent implements OnInit {
       var punctuatedSentence = this.storyService.punctuate(sentence.trim());
       var story = new Story(punctuatedSentence, this.user.displayName, [punctuatedSentence], this.user.uid);
 
-      this.storyService.createStory(story);
+      console.log(punctuatedSentence);
+      // this.storyService.createStory(story);
     }
   }
 
