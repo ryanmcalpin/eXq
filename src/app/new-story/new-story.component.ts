@@ -36,7 +36,8 @@ export class NewStoryComponent implements OnInit {
     if (sentence.trim().length < 2) {
       alert("Enter a sentence!");
     } else {
-      var story = new Story(sentence.trim(), this.user.displayName, [sentence.trim()], this.user.uid);
+      var punctuatedSentence = this.storyService.punctuate(sentence.trim());
+      var story = new Story(punctuatedSentence, this.user.displayName, [punctuatedSentence], this.user.uid);
 
       this.storyService.createStory(story);
     }

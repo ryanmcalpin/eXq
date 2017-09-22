@@ -21,6 +21,24 @@ export class StoryService {
     this.database.object('games/' + story.ownerUid + '/' + fKey + '/firebaseKey').set(fKey);
   }
 
+  punctuate(sentence: string): string {
+    var puncAsLast = sentence.slice(sentence.length - 1).match(/(\.|\?|\!)/);
+    var periodAsLast = sentence.slice(sentence.length - 1).match(/\./);
+    var quoteAsLast = sentence.slice(sentence.length - 1).match(/(\'|\")/);
+    var puncAsSecondToLast = sentence.slice(sentence.length - 2, sentence.length - 1).match(/(\.|\?|\!)/);
+    var quoteAsSecondToLast = sentence.slice(sentence.length - 2, sentence.length - 1).match(/(\'|\")/);
+
+    if (quoteAsLast && !puncAsSecondToLast) {
+      sentence = sentence.slice(0, sentence.length - 1) + "." + sentence.slice(sentence.length - 1);
+    } else if (quoteAsSecondToLast && periodAsLast) {
+      sentence = sentence.slice(0, sentence.length - 2) + "." + sentence.slice(sentence.length - 2, sentence.length - 1);
+    } else if (!quoteAsLast && !puncAsLast) {
+      sentence = sentence.concat(".");
+    }
+
+    return sentence;
+  }
+
   private handleError(error: any): Promise<any> {
     console.error('And error occurred', error); //demo only
     return Promise.reject(error.message || error);
