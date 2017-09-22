@@ -1,6 +1,6 @@
 <div *ngIf="story">
   <h4>Owner: {{story?.ownerName}}</h4>
-  <h4 *ngIf='needsInvite' (click)="goToInvite()">Invite Needed!</h4>
+  <h4 *ngIf='needsInvite' (click)="goToInvite()" class="clickable">Invite Needed!</h4>
   <h4 *ngIf='hasInvite'>Invtited: {{story?.collaboratorName}}</h4>
   <h4 *ngIf='!needsInvite && !hasInvite'>Collaborator: {{story?.collaboratorName}}</h4>
 
