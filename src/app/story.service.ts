@@ -19,6 +19,7 @@ export class StoryService {
   createStory(story: Story) {
     var fKey = this.database.list('games/' + story.ownerUid).push(story).key;
     this.database.object('games/' + story.ownerUid + '/' + fKey + '/firebaseKey').set(fKey);
+    return fKey;
   }
 
   punctuate(sentence: string): string {

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
@@ -18,7 +19,8 @@ export class NewStoryComponent implements OnInit {
 
 
   constructor(private storyService: StoryService,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private router: Router) { }
 
   ngOnInit() {
     this.authService.getCurrentUser()
@@ -39,8 +41,8 @@ export class NewStoryComponent implements OnInit {
       var punctuatedSentence = this.storyService.punctuate(sentence.trim());
       var story = new Story(punctuatedSentence, this.user.displayName, [punctuatedSentence], this.user.uid);
 
-      console.log(punctuatedSentence);
-      // this.storyService.createStory(story);
+      var gameId = this.storyService.createStory(story);
+      this.router.navigate(['/invite', gameId]);
     }
   }
 
