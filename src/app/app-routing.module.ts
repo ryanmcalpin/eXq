@@ -10,7 +10,7 @@ import { InviteComponent } from './invite/invite.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/my-stories',
+    redirectTo: '/stories',
     pathMatch: 'full'
   },
   {
@@ -18,7 +18,7 @@ const routes: Routes = [
     component: NewStoryComponent
   },
   {
-    path: 'my-stories',
+    path: 'stories',
     component: MyStoriesComponent
   },
   {
