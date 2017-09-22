@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
@@ -19,15 +19,18 @@ export class StoryComponent implements OnInit, OnDestroy {
   hasInvite: boolean;
   needsInvite: boolean;
   fullStory: string = "    ";
+  storyId: string;
 
 
 
   constructor(private storyService: StoryService,
               private route: ActivatedRoute,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private router: Router) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
+      this.storyId = params['id'];
       this.authService.getCurrentUser()
         .takeUntil(this.ngUnsubscribe)
         .subscribe(user => {
@@ -52,6 +55,10 @@ export class StoryComponent implements OnInit, OnDestroy {
         this.fullStory = this.fullStory.concat(" " + this.story.collaboratorSentences[i] + " ");
       }
     }
+  }
+
+  goToInvite() {
+    this.router.navigate(['/invite', this.storyId]);
   }
 
   ngOnDestroy() {
