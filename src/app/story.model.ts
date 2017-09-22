@@ -1,10 +1,3 @@
 export class Story {
-  collaboratorName: string;
-  collaboratorSentences: string[];
-  collaboratorUid: string;
-  firebaseKey: string;
-  openingLine: string;
-  ownerName: string;
-  ownerSentences: string[];
-  ownerUid: string;
+  constructor(public openingLine: string, public ownerName: string, public ownerSentences: string[], public ownerUid: string) { }
 }

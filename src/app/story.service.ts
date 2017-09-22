@@ -16,6 +16,11 @@ export class StoryService {
     return this.database.object('games/' + uid + '/' + id);
   }
 
+  createStory(story: Story) {
+    var fKey = this.database.list('games/' + story.ownerUid).push(story).key;
+    this.database.object('games/' + story.ownerUid + '/' + fKey + '/firebaseKey').set(fKey);
+  }
+
   private handleError(error: any): Promise<any> {
     console.error('And error occurred', error); //demo only
     return Promise.reject(error.message || error);
