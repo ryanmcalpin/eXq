@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
-
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
 

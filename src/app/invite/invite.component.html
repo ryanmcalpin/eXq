@@ -1,3 +1,7 @@
-<p>
-  invite works!
-</p>
+<h3>Invite a friend</h3>
+
+<div>
+  <p>Enter a friend's nickname:</p>
+  <input #invitee />
+  <button (click)="clickInvite(invitee.value)">GO</button>
+</div>

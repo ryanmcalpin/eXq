@@ -22,6 +22,16 @@ export class StoryService {
     return fKey;
   }
 
+  doesUserExist(name: string) {
+    return this.database.object('nicknames/' + name);
+  }
+
+
+  inviteUser(uid, name): any {
+    console.log(name + uid);
+    return this.database.list('nicknames/'); // TEMPORARY: to avoid errors
+  }
+
   punctuate(sentence: string): string {
     var puncAsLast = sentence.slice(sentence.length - 1).match(/(\.|\?|\!)/);
     var periodAsLast = sentence.slice(sentence.length - 1).match(/\./);

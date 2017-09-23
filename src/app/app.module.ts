@@ -39,7 +39,11 @@ export const firebaseConfig = {
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule
   ],
-  providers: [ StoryService, AuthService, AngularFireAuth ],
+  providers: [
+    StoryService,
+    AuthService,
+    AngularFireAuth
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
