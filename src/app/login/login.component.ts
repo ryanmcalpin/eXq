@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
 
   login(email, password) {
     this.authService.login(email, password)
-      .then(data => this.router.navigate(['/my-stories']));
+      .then(data => this.router.navigate(['/stories']));
   }
 
   logout() {
