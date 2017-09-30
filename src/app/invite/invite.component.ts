@@ -55,10 +55,6 @@ export class InviteComponent implements OnInit, OnDestroy {
       .subscribe(results => {
       // NAVIGATE on Callback, results need to be..game?
     });
-    // this.storyService.getStory(this.user.uid, this.storyId)
-    //   .takeUntil(this.ngUnsubscribe)
-    //   .subscribe(story => {
-    //   });
   }
 
   ngOnDestroy() {
