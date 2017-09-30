@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import 'rxjs/add/operator/takeUntil';
@@ -12,10 +12,11 @@ import { StoryService } from '../story.service';
   templateUrl: './invite.component.html',
   styleUrls: ['./invite.component.css']
 })
-export class InviteComponent implements OnInit {
+export class InviteComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<void> = new Subject<void>();
   user: any;
   storyId: string;
+  story: any;
 
   constructor(private authService: AuthService,
               private storyService: StoryService,
@@ -28,6 +29,9 @@ export class InviteComponent implements OnInit {
         .takeUntil(this.ngUnsubscribe)
         .subscribe(user => {
           this.user = user;
+          this.storyService.getStory(this.user.uid, this.storyId)
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(story => this.story = story);
       });
     });
   }
@@ -46,17 +50,20 @@ export class InviteComponent implements OnInit {
   }
 
   inviteUser(inviteeUid, inviteeName) {
-    this.storyService.getStory(this.user.uid, this.storyId)
+    this.storyService.inviteUser(inviteeUid, inviteeName, this.story)
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(story => {
-        this.storyService.inviteUser(inviteeUid, inviteeName, story)
-          .takeUntil(this.ngUnsubscribe)
-          .subscribe(results => {
-            console.log("results: " + results)
-            // NAVIGATE on Callback, results need to be..game?
-            // console.log(results);
-          });
-      });
+      .subscribe(results => {
+      // NAVIGATE on Callback, results need to be..game?
+    });
+    // this.storyService.getStory(this.user.uid, this.storyId)
+    //   .takeUntil(this.ngUnsubscribe)
+    //   .subscribe(story => {
+    //   });
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
 }
