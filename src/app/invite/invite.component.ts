@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
@@ -20,7 +20,8 @@ export class InviteComponent implements OnInit, OnDestroy {
 
   constructor(private authService: AuthService,
               private storyService: StoryService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private router: Router) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -42,7 +43,6 @@ export class InviteComponent implements OnInit, OnDestroy {
       .subscribe(invitee => {
         if (invitee.$value) {
           this.inviteUser(invitee.$value, invitee.$key);
-          console.log(this.user.uid)
         } else {
           alert("User does not exist!");
         }
@@ -52,8 +52,8 @@ export class InviteComponent implements OnInit, OnDestroy {
   inviteUser(inviteeUid, inviteeName) {
     this.storyService.inviteUser(inviteeUid, inviteeName, this.story)
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(results => {
-      // NAVIGATE on Callback, results need to be..game?
+      .subscribe(story => {
+        this.router.navigate(['/story', story.firebaseKey]);
     });
   }
 
