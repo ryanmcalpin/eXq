@@ -41,7 +41,6 @@ export class MyStoriesComponent implements OnInit, OnDestroy {
       .takeUntil(this.ngUnsubscribe)
       .subscribe(stories => {
         this.stories = stories;
-        console.log(this.stories);
       });
   }
 

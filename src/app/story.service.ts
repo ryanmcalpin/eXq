@@ -2,8 +2,12 @@ import { Injectable } from '@angular/core';
 import { Story } from './story.model';
 import { AngularFireDatabase } from 'angularfire2/database';
 
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
+
 @Injectable()
 export class StoryService {
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private database: AngularFireDatabase) {
   }
@@ -27,9 +31,9 @@ export class StoryService {
   }
 
 
-  inviteUser(uid, name): any {
-    console.log(name + uid);
-    return this.database.list('nicknames/'); // TEMPORARY: to avoid errors
+  inviteUser(uid, name, story): any {
+    this.database.object('collaboratorInvites/' + uid + '/' + story.$key).set(story);
+    return this.database.object('games/' + story.ownerUid + '/' + story.firebaseKey).update({ collaboratorName: name });
   }
 
   punctuate(sentence: string): string {

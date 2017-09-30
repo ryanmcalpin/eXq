@@ -35,20 +35,28 @@ export class InviteComponent implements OnInit {
   clickInvite(inviteeName) {
     this.storyService.doesUserExist(inviteeName)
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(user => {
-        if (user.$value) {
-          console.log(user)
-          this.inviteUser(user.$value, user.$key)
+      .subscribe(invitee => {
+        if (invitee.$value) {
+          this.inviteUser(invitee.$value, invitee.$key);
+          console.log(this.user.uid)
         } else {
-          console.log('hrmm')
+          alert("User does not exist!");
         }
       });
   }
 
   inviteUser(inviteeUid, inviteeName) {
-    this.storyService.inviteUser(inviteeUid, inviteeName)
+    this.storyService.getStory(this.user.uid, this.storyId)
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(results => console.log(results))
+      .subscribe(story => {
+        this.storyService.inviteUser(inviteeUid, inviteeName, story)
+          .takeUntil(this.ngUnsubscribe)
+          .subscribe(results => {
+            console.log("results: " + results)
+            // NAVIGATE on Callback, results need to be..game?
+            // console.log(results);
+          });
+      });
   }
 
 }
