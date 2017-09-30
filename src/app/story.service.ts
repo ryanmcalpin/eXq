@@ -4,7 +4,6 @@ import { AngularFireDatabase } from 'angularfire2/database';
 
 @Injectable()
 export class StoryService {
-
   constructor(private database: AngularFireDatabase) {
   }
 
@@ -20,6 +19,17 @@ export class StoryService {
     var fKey = this.database.list('games/' + story.ownerUid).push(story).key;
     this.database.object('games/' + story.ownerUid + '/' + fKey + '/firebaseKey').set(fKey);
     return fKey;
+  }
+
+  doesUserExist(name: string) {
+    return this.database.object('nicknames/' + name);
+  }
+
+
+  inviteUser(uid, name, story) {
+    this.database.object('collaboratorInvites/' + uid + '/' + story.$key).set(story);
+    this.database.object('games/' + story.ownerUid + '/' + story.firebaseKey).update({ collaboratorName: name });
+    return this.database.object('games/' + story.ownerUid + '/' + story.firebaseKey);
   }
 
   punctuate(sentence: string): string {

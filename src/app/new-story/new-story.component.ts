@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import 'rxjs/add/operator/takeUntil';
@@ -13,7 +13,7 @@ import { AuthService } from '../auth.service';
   templateUrl: './new-story.component.html',
   styleUrls: ['./new-story.component.css']
 })
-export class NewStoryComponent implements OnInit {
+export class NewStoryComponent implements OnInit, OnDestroy {
   user: any;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
@@ -44,6 +44,11 @@ export class NewStoryComponent implements OnInit {
       var gameId = this.storyService.createStory(story);
       this.router.navigate(['/invite', gameId]);
     }
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
 }
